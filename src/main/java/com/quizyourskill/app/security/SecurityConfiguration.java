@@ -11,21 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfiguration extends VaadinWebSecurity {
+public class SecurityConfiguration extends VaadinWebSecurity{
+   public static final String LOGOUT_URL = "/";
 
-    public static final String LOGOUT_URL = "/";
+   @Bean
+   public PasswordEncoder passwordEncoder(){
+      return new BCryptPasswordEncoder();
+   }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http.authorizeRequests().antMatchers("/images/*.png").permitAll();
-        super.configure(http);
-        setLoginView(http, LoginView.class, LOGOUT_URL);
-    }
-
+   @Override
+   protected void configure(HttpSecurity http) throws Exception{
+      http.authorizeRequests().antMatchers("/images/*.png").permitAll();
+      super.configure(http);
+      setLoginView(http, LoginView.class, LOGOUT_URL);
+   }
 }
